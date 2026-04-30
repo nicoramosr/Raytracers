@@ -10,21 +10,23 @@ public class RayTracer {
     static final double NEAR   = 0.1;
     static final double FAR    = 100.0;
 
+    //static final String OBJ_FILE = null;  (if there's no obj file, it will render a single triangle)
+    static final String OBJ_FILE = "C:\\Users\\nicor\\Downloads\\teapot.obj";  
     public static void main(String[] args) throws IOException {
 
         Camera camera = new Camera(
-            new Vector3D(0, 0, 0),
+            new Vector3D(0, 2, 6),
             60, WIDTH, HEIGHT,
             NEAR, FAR
         );
 
         Scene scene = new Scene();
 
-        if (args.length > 0) {
-            ObjReader.load(args[0], scene);
+        if (OBJ_FILE != null) {
+            ObjReader.load(OBJ_FILE, scene);
         } else {
             scene.add(new Triangle(
-                new Vector3D( 0.0,  0.8, -2.0),  
+                new Vector3D( 0.0,  0.8, -2.0), 
                 new Vector3D(-0.8, -0.5, -2.0),  
                 new Vector3D( 0.8, -0.5, -2.0)   
             ));
@@ -70,10 +72,11 @@ public class RayTracer {
             }
         }
 
-        String outFile = args.length > 0
-            ? args[0].replace(".obj", ".png")
+        String outFile = OBJ_FILE != null
+            ? OBJ_FILE.replace(".obj", ".png")
             : "output.png";
 
+        System.out.println("Finshed rendering");
         ImageIO.write(image, "png", new File(outFile));
     }
 }
